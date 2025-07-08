@@ -1,12 +1,15 @@
 # IP Camera RTSP Live Viewer
 
-This project allows you to view live streams from IP cameras using Python and OpenCV, with real-time person detection capabilities.
+This project allows you to view live streams from IP cameras using Python and OpenCV, with real-time person and motion detection capabilities.
 
 ## Features
 - Live RTSP stream viewing
 - Real-time person detection using HOG (Histogram of Oriented Gradients)
-- Visual bounding boxes around detected people
+- Motion detection (frame differencing)
+- Visual bounding boxes for detected people and motion
 - Detection counter display
+- Saves images to `pictures/` when a person is detected with motion
+- Auto-formatting and linting with pre-commit (black, pycln, flake8)
 
 ## Requirements
 - Python 3.8+
@@ -37,35 +40,42 @@ This project allows you to view live streams from IP cameras using Python and Op
    # Edit .env with your username, password and IP
    ```
 
-5. Run the viewer:
-   ```bash
-   uv run python src/main.py
-   ```
+## Usage
+
+Run the main script:
+```bash
+uv run python src/security_cam/main.py
+```
+
+- A window will open showing the live camera feed with person and motion detection.
+- Green bounding boxes will appear around detected people.
+- Red bounding boxes will appear where motion is detected.
+- The detection counter shows the number of people currently detected.
+- Images with detected people and motion are saved in the `pictures/` folder.
+- Press 'q' to close the window and exit.
 
 ## Development
 
-To install development dependencies (testing, linting, etc.):
+To install development dependencies (testing, linting, formatting, etc.):
 ```bash
 uv sync --group dev
 ```
 
-To run the project with development dependencies:
+### Auto-formatting and Linting
+
+This project uses [pre-commit](https://pre-commit.com/) to automatically format and lint code on commit using black, pycln, and flake8.
+
+1. Install pre-commit hooks:
+   ```bash
+   uv pip install --upgrade pre-commit
+   pre-commit install
+   ```
+2. Now, every time you commit, your code will be auto-formatted and linted.
+
+You can also run the hooks manually:
 ```bash
-uv run --group dev python src/main.py
+pre-commit run --all-files
 ```
-
-## Usage
-- A window will open showing the live camera feed with person detection.
-- Green bounding boxes will appear around detected people.
-- The detection counter shows the number of people currently detected.
-- Press 'q' to close the window and exit.
-
-## Person Detection
-The application uses OpenCV's built-in HOG (Histogram of Oriented Gradients) person detector, which:
-- Works well in various lighting conditions
-- Detects full-body poses
-- Provides real-time performance
-- Uses machine learning-based detection
 
 ## Project Structure
 
@@ -74,6 +84,10 @@ security_cam/
 ├── .env.example
 ├── pyproject.toml
 ├── README.md
-└── src/
-    └── main.py
+├── .pre-commit-config.yaml
+├── src/
+│   └── security_cam/
+│       ├── __init__.py
+│       └── main.py
+└── pictures/
 ``` 

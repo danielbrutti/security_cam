@@ -19,15 +19,20 @@ dev = [
     "pytest",
     "black",
     "flake8",
+    "pycln",
+    "pre-commit",
 ]
 
-[tool.hatch.build.targets.wheel]
-packages = ["src"]
-
 [tool.black]
-line-length = 88
+line-length = 79
 target-version = ['py38']
 
 [tool.flake8]
-max-line-length = 88
-extend-ignore = ["E203"] 
+max-line-length = 79
+extend-ignore = ["E203"]
+
+[tool.pycln]
+all = true 
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/security_cam"] 
